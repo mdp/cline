@@ -1,5 +1,11 @@
-import { defineConfig } from '@vscode/test-cli';
+// .vscode-test.js
+const { defineConfig } = require('@vscode/test-cli');
 
-export default defineConfig({
-	files: 'out/test/**/*.test.js',
-});
+module.exports = defineConfig([
+  {
+    label: 'unitTests',
+    files: 'out/src/test/vscode/*.test.js',
+    version: 'stable',
+  }
+  // you can specify additional test configurations, too
+]);
