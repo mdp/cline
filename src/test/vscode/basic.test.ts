@@ -15,7 +15,6 @@ suite('Extension Test Suite', () => {
     const id = packageJSON.publisher + '.' + packageJSON.name
     const clineExtensionApi = vscode.extensions.getExtension(id);
     assert.equal(clineExtensionApi?.id, id)
-    console.log("extension", clineExtensionApi)
   });
   test('Ensure that the extension is correctly loaded by running a command', async () => {
     await new Promise((resolve) => setTimeout(resolve, 400));

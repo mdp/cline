@@ -117,6 +117,7 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
+    "clean": "rimraf dist && rimraf out",
     "compile:esbuild": "node esbuild.js --production",
     "compile:tests": "tsc",
     "watch": "npm-run-all -p watch:*",
@@ -127,7 +128,7 @@
     "lint": "eslint src --ext ts",
     "pretest": "npm run check-types && npm run lint",
     "test": "vitest",
-    "test:extension": "npm run compile:tests && vscode-test",
+    "test:extension": "npm run clean && npm run compile:tests && npm run compile:esbuild && vscode-test",
     "install:all": "npm install && cd webview-ui && npm install",
     "start:webview": "cd webview-ui && npm run start",
     "build:webview": "cd webview-ui && npm run build",
@@ -146,6 +147,7 @@
     "esbuild": "^0.21.5",
     "eslint": "^8.57.0",
     "npm-run-all": "^4.1.5",
+    "rimraf": "^6.0.1",
     "typescript": "^5.4.5",
     "vitest": "^2.1.4"
   },
