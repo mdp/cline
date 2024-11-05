@@ -5,5 +5,6 @@ export default defineConfig([
     label: 'unitTests',
     files: 'out/src/test/vscode/*.test.js',
     version: 'stable',
+    extensionDevelopmentPath: '.',
   }
 ]);
