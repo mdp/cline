@@ -1,0 +1,60 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - release
+      - pre-release
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Build VSIX
+        run: |
+          npm run package
+          npm run vscode:package
+          
+      - name: Semantic Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release
+        
+      - name: Upload VSIX as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: extension
+          path: "*.vsix"
+          
+      - name: Upload VSIX to release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          VSIX_PATH=$(find . -name "*.vsix")
+          
+          if [[ "${{ github.ref }}" == "refs/heads/pre-release" ]]; then
+            # For pre-release, the version will already include -rc.X from semantic-release
+            gh release upload "v$VERSION" "$VSIX_PATH" --clobber
+          else
+            # For main release
+            gh release upload "v$VERSION" "$VSIX_PATH" --clobber
+          fi
