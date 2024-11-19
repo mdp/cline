@@ -7,7 +7,11 @@ on:
       - pre-release
 
 jobs:
+  test:
+    uses: ./.github/workflows/test.yml
+
   release:
+    needs: test
     name: Release
     runs-on: ubuntu-latest
     permissions:
@@ -25,8 +29,11 @@ jobs:
         with:
           node-version: 22
           
-      - name: Install dependencies
+      - name: Install root dependencies
         run: npm ci
+
+      - name: Install webview-ui dependencies
+        run: cd webview-ui && npm ci
         
       - name: Build VSIX
         run: |
