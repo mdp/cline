@@ -7,7 +7,11 @@ on:
       - pre-release
 
 jobs:
+  test:
+    uses: ./.github/workflows/test.yml
+
   release:
+    needs: test
     name: Release
     runs-on: ubuntu-latest
     permissions:
@@ -25,19 +29,23 @@ jobs:
         with:
           node-version: 22
           
-      - name: Install dependencies
+      - name: Install root dependencies
         run: npm ci
+
+      - name: Install webview-ui dependencies
+        run: cd webview-ui && npm ci
+        
+      - name: Semantic Release
+        id: semantic
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release
         
       - name: Build VSIX
         run: |
           npm run package
           npm run vscode:package
           
-      - name: Semantic Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx semantic-release
-        
       - name: Upload VSIX as artifact
         uses: actions/upload-artifact@v3
         with:
@@ -50,11 +58,4 @@ jobs:
         run: |
           VERSION=$(node -p "require('./package.json').version")
           VSIX_PATH=$(find . -name "*.vsix")
-          
-          if [[ "${{ github.ref }}" == "refs/heads/pre-release" ]]; then
-            # For pre-release, the version will already include -rc.X from semantic-release
-            gh release upload "v$VERSION" "$VSIX_PATH" --clobber
-          else
-            # For main release
-            gh release upload "v$VERSION" "$VSIX_PATH" --clobber
-          fi
+          gh release upload "v$VERSION" "$VSIX_PATH" --clobber
