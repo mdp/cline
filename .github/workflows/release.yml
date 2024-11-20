@@ -1,0 +1,71 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Get tag info
+        id: tag
+        run: |
+          TAG=${GITHUB_REF#refs/tags/}
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          if [[ $TAG == *"-"* ]]; then
+            echo "is_prerelease=true" >> $GITHUB_OUTPUT
+          else
+            echo "is_prerelease=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install webview-ui dependencies
+        run: cd webview-ui && npm ci
+
+      - name: Build VSIX
+        run: npm run vscode:package
+
+      - name: Create GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VSIX_PATH=$(find . -name "*.vsix")
+          if [ "${{ steps.tag.outputs.is_prerelease }}" == "true" ]; then
+            gh release create "${{ steps.tag.outputs.tag }}" \
+              --prerelease \
+              --title "Pre-release ${{ steps.tag.outputs.tag }}" \
+              --notes "Pre-release build" \
+              "$VSIX_PATH"
+          else
+            gh release create "${{ steps.tag.outputs.tag }}" \
+              --title "Release ${{ steps.tag.outputs.tag }}" \
+              --notes "Production release" \
+              "$VSIX_PATH"
+          fi
+
+      - name: Publish to VSCode Marketplace
+        if: steps.tag.outputs.is_prerelease == 'false' && env.VSCE_PAT != ''
+        run: npx vsce publish -p ${{ env.VSCE_PAT }}
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+
+      - name: Publish to Open VSCode Marketplace
+        if: steps.tag.outputs.is_prerelease == 'false' && env.OVSX_PAT != ''
+        run: npx ovsx publish -p ${{ env.OVSX_PAT }}
+        env:
+          OVSX_PAT: ${{ secrets.OVSX_PAT }}
