@@ -1,0 +1,66 @@
+name: Release
+
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types:
+      - completed
+    branches:
+      - main
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    # Only run if the CI workflow succeeded
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install webview-ui dependencies
+        run: cd webview-ui && npm ci
+        
+      - name: Create Release Pull Request or Publish
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          version: npx changeset version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Debug Changesets Output
+        run: |
+          echo "Published: ${{ steps.changesets.outputs.published }}"
+          echo "Has Changes: ${{ steps.changesets.outputs.hasChangesets }}"
+          echo "Pull Request Number: ${{ steps.changesets.outputs.pullRequestNumber }}"
+
+      - name: Build VSIX
+        if: steps.changesets.outputs.published == 'true' && !steps.changesets.outputs.pullRequestNumber
+        run: |
+          npm run build
+
+      - name: Create GitHub Release
+        if: steps.changesets.outputs.published == 'true' && !steps.changesets.outputs.pullRequestNumber
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          VSIX_PATH=$(find . -name "*.vsix")
+          gh release create "v$VERSION" \
+            --title "Release v$VERSION" \
+            --notes "$(git log -1 --pretty=%B)" \
+            "$VSIX_PATH"
