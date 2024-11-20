@@ -1,0 +1,45 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install webview-ui dependencies
+        run: cd webview-ui && npm ci
+        
+      - name: Apply Changesets
+        run: npx changeset version
+
+      - name: Build VSIX
+        run: |
+          npm run build
+
+      - name: Create GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          VSIX_PATH=$(find . -name "*.vsix")
+          gh release create "v$VERSION" \
+            --title "Release v$VERSION" \
+            --notes "$(git log -1 --pretty=%B)" \
+            "$VSIX_PATH"
