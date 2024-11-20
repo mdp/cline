@@ -1,13 +1,17 @@
-name: Release
+name: Preview Build
 
 on:
   push:
     branches:
-      - main
+      - preview
 
 jobs:
-  release:
-    name: Release
+  test:
+    uses: ./.github/workflows/test.yml
+
+  preview:
+    needs: test
+    name: Create Preview Build
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -26,8 +30,13 @@ jobs:
       - name: Install webview-ui dependencies
         run: cd webview-ui && npm ci
         
-      - name: Apply Changesets
-        run: npx changeset version
+      - name: Set Preview Version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          GIT_HASH=$(git rev-parse --short HEAD)
+          DATE=$(date +%Y%m%d)
+          echo "RELEASE_VERSION=${VERSION}-${GIT_HASH}-${DATE}" >> $GITHUB_ENV
+          npm version $RELEASE_VERSION --no-git-tag-version
         
       - name: Build VSIX
         run: |
@@ -38,9 +47,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          VERSION=$(node -p "require('./package.json').version")
           VSIX_PATH=$(find . -name "*.vsix")
-          gh release create "v$VERSION" \
-            --title "Release v$VERSION" \
-            --notes "$(git log -1 --pretty=%B)" \
+          gh release create "v$RELEASE_VERSION" \
+            --prerelease \
+            --title "Preview v$RELEASE_VERSION" \
+            --notes "Preview build from preview branch" \
             "$VSIX_PATH"
