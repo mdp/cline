@@ -54,8 +54,8 @@ jobs:
               run: npm run format
 
             - name: Test
-              run: npm run test:extension
+              run: npm test
 
             - name: VS-Code Tests
-              run: xvfb-run -a npm run test:extension:e2e
+              run: xvfb-run -a npm run test:extension
               if: runner.os == 'Linux'
