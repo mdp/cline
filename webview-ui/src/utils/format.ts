@@ -1,12 +1,14 @@
 export function formatLargeNumber(num: number): string {
-	if (num >= 1e9) {
-		return (num / 1e9).toFixed(1) + "b"
-	}
-	if (num >= 1e6) {
-		return (num / 1e6).toFixed(1) + "m"
-	}
-	if (num >= 1e3) {
-		return (num / 1e3).toFixed(1) + "k"
-	}
-	return num.toString()
+    // For numbers >= 1000, use compact notation with 1 decimal place
+    if (num >= 1000) {
+        const formatter = new Intl.NumberFormat('en-US', {
+            notation: 'compact',
+            maximumFractionDigits: 1,
+            minimumFractionDigits: 1
+        })
+        return formatter.format(num).toLowerCase()
+    }
+    
+    // For numbers < 1000, use regular integer formatting
+    return num.toString()
 }
