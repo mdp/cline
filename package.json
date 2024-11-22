@@ -135,9 +135,10 @@
 		"compile-tests": "tsc -p . --outDir out",
 		"watch-tests": "tsc -p . -w --outDir out",
 		"pretest": "npm run clean && npm run compile-tests && npm run compile",
-		"test": "npm run test:extension && npm run test:extension:e2e",
+		"test": "npm run test:extension && npm run test:extension:e2e && npm run test:webview",
 		"test:extension": "vitest",
-		"test:extension:e2e": "vscode-test"
+		"test:extension:e2e": "vscode-test",
+		"test:webview": "cd webview-ui && npm run test"
 	},
 	"devDependencies": {
 		"@types/diff": "^5.2.1",
