@@ -6,6 +6,10 @@ on:
       - main
 
 jobs:
+
+  test:
+    uses: ./.github/workflows/test.yml
+
   create-release-pr:
     name: Create Changeset PR
     runs-on: ubuntu-latest
