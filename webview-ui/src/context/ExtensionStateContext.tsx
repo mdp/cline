@@ -59,6 +59,7 @@ export const ExtensionStateContextProvider: React.FC<{
 							config.geminiApiKey,
 							config.openAiNativeApiKey,
 							config.deepSeekApiKey,
+							config.codestralApiKey,
 						].some((key) => key !== undefined)
 					: false
 				setShowWelcome(!hasKey)

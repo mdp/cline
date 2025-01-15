@@ -17,6 +17,8 @@ import {
 	azureOpenAiDefaultApiVersion,
 	bedrockDefaultModelId,
 	bedrockModels,
+	codestralModels,
+	codestralDefaultModelId,
 	deepSeekDefaultModelId,
 	deepSeekModels,
 	geminiDefaultModelId,
@@ -148,8 +150,40 @@ const ApiOptions = ({ showModelOptions, apiErrorMessage, modelIdErrorMessage }: 
 					<VSCodeOption value="openai">OpenAI Compatible</VSCodeOption>
 					<VSCodeOption value="lmstudio">LM Studio</VSCodeOption>
 					<VSCodeOption value="ollama">Ollama</VSCodeOption>
+					<VSCodeOption value="codestral">Codestral</VSCodeOption>
 				</VSCodeDropdown>
 			</div>
+
+			{selectedProvider === "codestral" && (
+				<div>
+					<VSCodeTextField
+						value={apiConfiguration?.codestralApiKey || ""}
+						style={{ width: "100%" }}
+						type="password"
+						onInput={handleInputChange("codestralApiKey")}
+						placeholder="Enter API Key...">
+						<span style={{ fontWeight: 500 }}>Codestral API Key</span>
+					</VSCodeTextField>
+					<p
+						style={{
+							fontSize: "12px",
+							marginTop: 3,
+							color: "var(--vscode-descriptionForeground)",
+						}}>
+						This key is stored locally and only used to make API requests from this extension.
+						{!apiConfiguration?.codestralApiKey && (
+							<VSCodeLink
+								href="http://codestral.mistral.ai"
+								style={{
+									display: "inline",
+									fontSize: "inherit",
+								}}>
+								You can get a Codestral API key by signing up here.
+							</VSCodeLink>
+						)}
+					</p>
+				</div>
+			)}
 
 			{selectedProvider === "anthropic" && (
 				<div>
@@ -697,6 +731,7 @@ const ApiOptions = ({ showModelOptions, apiErrorMessage, modelIdErrorMessage }: 
 							{selectedProvider === "gemini" && createDropdown(geminiModels)}
 							{selectedProvider === "openai-native" && createDropdown(openAiNativeModels)}
 							{selectedProvider === "deepseek" && createDropdown(deepSeekModels)}
+							{selectedProvider === "codestral" && createDropdown(codestralModels)}
 						</div>
 
 						<ModelInfoView
@@ -917,6 +952,8 @@ export function normalizeApiConfiguration(apiConfiguration?: ApiConfiguration) {
 				selectedModelId: apiConfiguration?.lmStudioModelId || "",
 				selectedModelInfo: openAiModelInfoSaneDefaults,
 			}
+		case "codestral":
+			return getProviderData(codestralModels, codestralDefaultModelId)
 		default:
 			return getProviderData(anthropicModels, anthropicDefaultModelId)
 	}

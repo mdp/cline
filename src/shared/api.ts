@@ -9,6 +9,7 @@ export type ApiProvider =
 	| "gemini"
 	| "openai-native"
 	| "deepseek"
+	| "codestral"
 
 export interface ApiHandlerOptions {
 	apiModelId?: string
@@ -35,6 +36,8 @@ export interface ApiHandlerOptions {
 	openAiNativeApiKey?: string
 	deepSeekApiKey?: string
 	azureApiVersion?: string
+	codestralApiKey?: string
+	codestralModelId?: string
 }
 
 export type ApiConfiguration = ApiHandlerOptions & {
@@ -157,6 +160,20 @@ export const bedrockModels = {
 		supportsPromptCache: false,
 		inputPrice: 0.25,
 		outputPrice: 1.25,
+	},
+} as const satisfies Record<string, ModelInfo>
+
+// Codestral
+export type CodestralModelId = keyof typeof codestralModels
+export const codestralDefaultModelId: CodestralModelId = "codestral-latest"
+export const codestralModels = {
+	"codestral-latest": {
+		maxTokens: 8192,
+		contextWindow: 200_000,
+		supportsImages: false,
+		supportsPromptCache: false,
+		inputPrice: 0.2,
+		outputPrice: 0.6,
 	},
 } as const satisfies Record<string, ModelInfo>
 
