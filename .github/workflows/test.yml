@@ -5,6 +5,9 @@ on:
     pull_request:
         branches:
             - main
+    push:
+        branches:
+            - main
 
 # Set default permissions for all jobs
 permissions:
