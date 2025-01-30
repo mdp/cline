@@ -26,7 +26,7 @@ jobs:
         needs: test
         name: Publish Extension
         runs-on: ubuntu-latest
-        environment: publish
+        environment: production
 
         steps:
             - uses: actions/checkout@v4
