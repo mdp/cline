@@ -232,6 +232,7 @@ export const e2e = test
 						"--disable-workspace-trust",
 						"--skip-welcome",
 						"--skip-release-notes",
+						"--disable-extensions", // Disable all extensions other than Cline to avoid interactions
 						`--user-data-dir=${userDataDir}`,
 						`--extensions-dir=${extensionsDir}`,
 						`--install-extension=${path.join(E2ETestHelper.CODEBASE_ROOT_DIR, "dist", "e2e.vsix")}`,
