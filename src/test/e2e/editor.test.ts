@@ -18,7 +18,8 @@ e2e("code actions and editor panel", async ({ page, sidebar, helper }) => {
 	// Sidebar should be opened and visible after adding code to Cline
 	await addSelectedCodeToClineWebview(page)
 	await expect(sidebarInput).not.toBeEmpty()
-	await expect(sidebarInput).toBeFocused()
+	// await expect(sidebarInput).toBeFocused()
+	await expect(sidebarInput).toBeFocused({ timeout: 2000 })
 
 	await page.getByRole("button", { name: "Open in Editor" }).click()
 	await page.waitForLoadState("load")
