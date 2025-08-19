@@ -3,8 +3,8 @@ name: E2E Tests
 on:
     workflow_dispatch:
     schedule:
-        # Run every 15 minutes
-        - cron: '*/15 * * * *'
+        # Run every 10 minutes
+        - cron: '*/10 * * * *'
 
 concurrency:
     group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -18,7 +18,7 @@ jobs:
         steps:
             - id: set-matrix
               run: |
-                  echo 'matrix=[{"runner":"macos","branch":"mdp/race-fix"},{"runner":"macos","branch":"main"}]' >> $GITHUB_OUTPUT
+                  echo 'matrix=[{"runner":"macos","branch":"main"}]' >> $GITHUB_OUTPUT
 
     e2e:
         needs: matrix_prep

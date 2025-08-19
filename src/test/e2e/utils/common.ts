@@ -8,11 +8,33 @@ export const openTab = async (_page: Page, tabName: string) => {
 }
 
 export const addSelectedCodeToClineWebview = async (_page: Page) => {
-	await _page.locator("div:nth-child(4) > span > span").first().click()
-	await _page.getByRole("textbox", { name: "The editor is not accessible" }).press("ControlOrMeta+a")
+	const timestamp = new Date().toISOString()
+	console.log(`[${timestamp}] addSelectedCodeToClineWebview: Starting`)
 
-	await _page.getByRole("listbox", { name: /Show Code Actions / }).click()
-	await _page.keyboard.press("Enter", { delay: 100 }) // First action - "Add to Cline"
+	try {
+		// Click on the editor line to select it
+		await _page.locator("div:nth-child(4) > span > span").first().click()
+		console.log(`[${timestamp}] addSelectedCodeToClineWebview: Clicked first element`)
+
+		// Select all text in the editor
+		await _page.getByRole("textbox", { name: "The editor is not accessible" }).press("ControlOrMeta+a")
+		console.log(`[${timestamp}] addSelectedCodeToClineWebview: Selected all text`)
+
+		// Open the code actions menu
+		await _page.getByRole("listbox", { name: /Show Code Actions / }).click()
+		console.log(`[${timestamp}] addSelectedCodeToClineWebview: Opened code actions menu`)
+
+		// Press Enter to select "Add to Cline" (first action)
+		await _page.keyboard.press("Enter", { delay: 100 })
+		console.log(`[${timestamp}] addSelectedCodeToClineWebview: Pressed Enter for 'Add to Cline' action`)
+
+		// Add a small wait to ensure the command has time to execute
+		await _page.waitForTimeout(200)
+		console.log(`[${timestamp}] addSelectedCodeToClineWebview: Completed successfully`)
+	} catch (error) {
+		console.error(`[${timestamp}] addSelectedCodeToClineWebview: Failed with error:`, error)
+		throw error
+	}
 }
 
 export const getClineEditorWebviewFrame = async (_page: Page) => {
