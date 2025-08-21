@@ -360,7 +360,9 @@
 		"test": "npm-run-all test:unit test:integration",
 		"test:ci": "node scripts/test-ci.js",
 		"test:integration": "vscode-test",
-		"test:unit": "TS_NODE_PROJECT='./tsconfig.unit-test.json' mocha",
+		"test:unit": "npm-run-all test:unit:mocha test:unit:vitest",
+		"test:unit:mocha": "TS_NODE_PROJECT='./tsconfig.unit-test.json' mocha",
+		"test:unit:vitest": "vitest run",
 		"test:coverage": "vscode-test --coverage",
 		"e2e": "playwright test -c playwright.config.ts",
 		"test:e2e": "playwright install && vsce package --no-dependencies --allow-package-secrets sendgrid --out dist/e2e.vsix && node src/test/e2e/utils/build.mjs && playwright test",
@@ -402,6 +404,7 @@
 		"@types/sinon": "^17.0.4",
 		"@types/turndown": "^5.0.5",
 		"@types/vscode": "^1.84.0",
+		"@vitest/ui": "^3.2.4",
 		"@vscode/test-cli": "^0.0.10",
 		"@vscode/test-electron": "^2.5.2",
 		"@vscode/vsce": "^3.6.0",
@@ -421,7 +424,8 @@
 		"ts-node": "^10.9.2",
 		"ts-proto": "^2.6.1",
 		"tsconfig-paths": "^4.2.0",
-		"typescript": "^5.4.5"
+		"typescript": "^5.4.5",
+		"vitest": "^3.2.4"
 	},
 	"dependencies": {
 		"@anthropic-ai/sdk": "^0.37.0",
