@@ -3,7 +3,7 @@
 		"ts"
 	],
 	"spec": [
-		"src/**/__tests__/*.ts",
+		"src/**/__tests__/*.test.ts",
 		"eslint-rules/__tests__/**/*.test.ts"
 	],
 	"require": [
