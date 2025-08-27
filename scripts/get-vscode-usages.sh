@@ -20,7 +20,7 @@ fi
   sed 's|.*vscode|vscode|'| # remove everything before vscode.
   sed 's|?||g' | # remove ? from vcode?.env?.foo
   sed 's/[^a-zA-Z0-9_.?].*$//' | # remove everything after last identifier
-  grep -E '\.[a-z][^.]+$' | # remove types (last part of identifier should be lowercase)
+
   cat > $TMP
 }
 {
