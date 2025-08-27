@@ -59,21 +59,19 @@ const checkGitHubAuth = async () => {
 		console.log("After authenticating, run this script again.")
 		return false
 	}
-}
-
 const createIssueUrl = (systemInfo, issueTitle) => {
+	const systemInfoBody = `Node: ${systemInfo.nodeVersion}
+npm: ${systemInfo.npmVersion}
+CPU Info: ${systemInfo.cpuInfo}
+Free RAM: ${systemInfo.memoryInfo}`;
 	return (
 		`https://github.com/cline/cline/issues/new?template=bug_report.yml` +
-		`&title=${issueTitle}` +
-		`&operating-system=${systemInfo.os}` +
-		`&cline-version=${systemInfo.clineVersion}` +
-		`&system-info=${
-			`Node: ${systemInfo.nodeVersion}\n` +
-			`npm: ${systemInfo.npmVersion}\n` +
-			`CPU Info: ${systemInfo.cpuInfo}\n` +
-			`Free RAM: ${systemInfo.memoryInfo}`
-		}`
+		`&title=${encodeURIComponent(issueTitle)}` +
+		`&operating-system=${encodeURIComponent(systemInfo.os)}` +
+		`&cline-version=${encodeURIComponent(systemInfo.clineVersion)}` +
+		`&system-info=${encodeURIComponent(systemInfoBody)}`
 	)
+}
 }
 
 const openUrl = (url) => {
