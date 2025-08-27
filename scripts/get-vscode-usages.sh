@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -eu
 
-FILES=$(git ls-files src|grep -v test|grep -v vscode|grep -v extension.ts|grep -v evals|grep -v standalone|grep -v /dev/)
+FILES=$(git ls-files src|grep -v test|grep -v evals|grep -v standalone|grep -v /dev/)
 DEST_DIR=dist-standalone
 SDK_DEST=$DEST_DIR/vscode-sdk-uses.txt
 CSS_DEST=$DEST_DIR/vscode-css-uses.txt
@@ -24,11 +24,8 @@ fi
   cat > $TMP
 }
 {
-  grep -hr 'vscode.commands.executeCommand' $FILES |
-  perl -ne 'print if /["\x27"]/'  | # Remove occurrences where the command is not on the same line (line doesnt contain quote chars) :(
-  sed -n 's|.*\(vscode.commands.executeCommand[^,]*\).*|\1|p'| # Remove all params after the first one
-  sed 's|\(".*"\).*|\1)|'| # Close the parantheses
-  cat >> $TMP
+perl -0777 -ne 'while (m/vscode\.commands\.executeCommand(?:\s*<[^>]*>)?\s*\(\s*["\x27]([^"\x27]+)["\x27]/g) { print "vscode.commands.executeCommand($1)
+" }' $FILES >> $TMP
 }
 
 # Count occurrences
