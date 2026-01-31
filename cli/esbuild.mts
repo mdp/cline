@@ -239,6 +239,8 @@ const config: esbuild.BuildOptions = {
 	supported: { "top-level-await": true },
 	banner: {
 		js: `#!/usr/bin/env node
+// Set process title for ps/top and tmux automatic-rename
+process.title = "cline";
 // Suppress all Node.js warnings (deprecation, experimental, etc.)
 process.emitWarning = () => {};
 import { createRequire as _createRequire } from 'module';

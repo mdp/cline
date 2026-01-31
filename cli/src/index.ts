@@ -37,6 +37,7 @@ import { parseImagesFromInput, processImagePaths } from "./utils/parser"
 import { CLINE_CLI_DIR, getCliBinaryPath } from "./utils/path"
 import { readStdinIfPiped } from "./utils/piped"
 import { runPlainTextTask } from "./utils/plain-text-task"
+import { autoSetTmuxWindowName } from "./utils/tmux"
 import { checkForUpdates } from "./utils/update"
 import { initializeCliContext } from "./vscode-context"
 import { CLI_LOG_FILE, shutdownEvent, window } from "./vscode-shim"
@@ -122,6 +123,9 @@ function setupSignalHandlers() {
 }
 
 setupSignalHandlers()
+
+// Automatically set tmux window name to 'cline' if running in tmux
+autoSetTmuxWindowName()
 
 interface CliContext {
 	extensionContext: any
