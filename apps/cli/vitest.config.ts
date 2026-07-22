@@ -51,7 +51,12 @@ export default defineConfig({
 	test: {
 		environment: "node",
 		include: ["src/**/*.test.ts"],
-		exclude: ["src/**/*.e2e.test.ts", "src/tests/**"],
+		exclude: [
+			"src/**/*.e2e.test.ts",
+			"src/tests/**",
+			// OpenTUI's native test renderer requires the Bun runtime.
+			"src/tui/dialog.test.ts",
+		],
 		// Default 5s is tight on CI: each test uses `resetModules()` + dynamic `import("./main")`
 		// (large graph). Cold transforms occasionally exceed 5s on shared runners.
 		testTimeout: 15_000,

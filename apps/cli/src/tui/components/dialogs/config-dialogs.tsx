@@ -1,6 +1,6 @@
-import type { ChoiceContext } from "@opentui-ui/dialog";
-import { useDialogKeyboard } from "@opentui-ui/dialog/react";
 import { useState } from "react";
+import type { ChoiceContext } from "#dialog";
+import { useDialogKeyboard } from "#dialog";
 import type {
 	InteractiveConfigData,
 	InteractiveConfigItem,

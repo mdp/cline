@@ -1,7 +1,7 @@
 import { useTerminalDimensions } from "@opentui/react";
-import type { ChoiceContext } from "@opentui-ui/dialog";
-import { useDialog } from "@opentui-ui/dialog/react";
 import { useCallback } from "react";
+import type { ChoiceContext } from "#dialog";
+import { useDialog } from "#dialog";
 import type { SlashCommandRegistry } from "../commands/slash-command-registry";
 import { resolveSlashCommand } from "../commands/slash-command-registry";
 import { ForkConfirmContent } from "../components/dialogs/fork-confirm";

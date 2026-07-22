@@ -1,7 +1,8 @@
 // @jsxImportSource @opentui/react
-import type { ChoiceContext } from "@opentui-ui/dialog";
-import { useDialogKeyboard } from "@opentui-ui/dialog/react";
+
 import { useRef, useState } from "react";
+import type { ChoiceContext } from "#dialog";
+import { useDialogKeyboard } from "#dialog";
 import { palette } from "../../palette";
 
 export type CheckpointRestoreMode = "chat-only" | "chat-and-workspace";

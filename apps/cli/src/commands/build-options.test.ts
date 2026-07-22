@@ -13,13 +13,13 @@ describe("CLI build options", () => {
 		expect(
 			shouldInstallNativeVariants({
 				options,
-				opentuiVersion: "0.1.102",
+				opentuiVersion: "0.4.5",
 			}),
 		).toBe(false);
 		expect(
 			validateBuildOptions({
 				options,
-				opentuiVersion: "0.1.102",
+				opentuiVersion: "0.4.5",
 				targetCount: 1,
 			}),
 		).toBeUndefined();
@@ -31,7 +31,7 @@ describe("CLI build options", () => {
 		expect(
 			validateBuildOptions({
 				options,
-				opentuiVersion: "0.1.102",
+				opentuiVersion: "0.4.5",
 				targetCount: 6,
 			}),
 		).toContain("--install-native-variants");
@@ -43,13 +43,13 @@ describe("CLI build options", () => {
 		expect(
 			shouldInstallNativeVariants({
 				options,
-				opentuiVersion: "0.1.102",
+				opentuiVersion: "0.4.5",
 			}),
 		).toBe(true);
 		expect(
 			validateBuildOptions({
 				options,
-				opentuiVersion: "0.1.102",
+				opentuiVersion: "0.4.5",
 				targetCount: 6,
 			}),
 		).toBeUndefined();

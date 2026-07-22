@@ -1,8 +1,9 @@
 // @jsxImportSource @opentui/react
-import type { ChoiceContext } from "@opentui-ui/dialog";
-import { useDialogKeyboard } from "@opentui-ui/dialog/react";
+
 import open from "open";
 import { useCallback, useMemo, useState } from "react";
+import type { ChoiceContext } from "#dialog";
+import { useDialogKeyboard } from "#dialog";
 import { palette } from "../tui/palette";
 import { getCliSubscriptionUrl } from "../utils/cline-pass-errors";
 import type { CliMigrationNotice } from "./notice";

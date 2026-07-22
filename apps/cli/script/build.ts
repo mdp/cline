@@ -6,10 +6,9 @@ import {
 	mkdirSync,
 	readdirSync,
 	readFileSync,
-	realpathSync,
 	statSync,
 } from "node:fs";
-import { join, relative, resolve } from "node:path";
+import { join, resolve } from "node:path";
 import { $ } from "bun";
 import {
 	parseBuildOptions,
@@ -147,19 +146,6 @@ if (shouldBuildHubWebview()) {
 
 const binaries: Record<string, string> = {};
 
-function findOpenTuiParserWorker(): string {
-	const localPath = resolve(
-		cliDir,
-		"node_modules/@opentui/core/parser.worker.js",
-	);
-	const rootPath = resolve(
-		rootDir,
-		"node_modules/@opentui/core/parser.worker.js",
-	);
-	const parserWorkerPath = existsSync(localPath) ? localPath : rootPath;
-	return realpathSync(parserWorkerPath);
-}
-
 function getBunTarget(
 	item: (typeof allTargets)[number],
 ): Bun.Build.CompileTarget {
@@ -172,14 +158,6 @@ async function buildCompiledBinary(input: {
 	dirName: string;
 	outfile: string;
 }): Promise<void> {
-	const parserWorker = findOpenTuiParserWorker();
-	const targetOs = input.bunTarget.includes("windows") ? "windows" : "posix";
-	const bunfsRoot = targetOs === "windows" ? "B:/~BUN/root/" : "/$bunfs/root/";
-	const parserWorkerPath = relative(rootDir, parserWorker).replaceAll(
-		"\\",
-		"/",
-	);
-
 	// Build to /tmp first so Bun's temp-file rename stays on one filesystem
 	// layer in containerized environments (virtiofs, overlayfs).
 	const entrypoint = join(cliDir, "src/index.ts");
@@ -192,7 +170,7 @@ async function buildCompiledBinary(input: {
 
 	process.chdir("/tmp");
 	const result = await Bun.build({
-		entrypoints: [entrypoint, parserWorker],
+		entrypoints: [entrypoint],
 		splitting: true,
 		compile: {
 			target: input.bunTarget,
@@ -201,7 +179,6 @@ async function buildCompiledBinary(input: {
 		minify: true,
 		external: ["@anthropic-ai/vertex-sdk"],
 		define: {
-			OTUI_TREE_SITTER_WORKER_PATH: bunfsRoot + parserWorkerPath,
 			// Inline telemetry/OTEL env vars at build time so the compiled
 			// binary ships with production telemetry configuration baked in.
 			...buildInlinedEnvDefines(),

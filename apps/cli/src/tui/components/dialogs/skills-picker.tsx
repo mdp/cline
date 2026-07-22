@@ -1,7 +1,7 @@
 import { useTerminalDimensions } from "@opentui/react";
-import type { ChoiceContext } from "@opentui-ui/dialog";
-import { useDialogKeyboard } from "@opentui-ui/dialog/react";
 import { useMemo, useRef, useState } from "react";
+import type { ChoiceContext } from "#dialog";
+import { useDialogKeyboard } from "#dialog";
 import type { SlashCommandRegistryEntry } from "../../commands/slash-command-registry";
 import { palette } from "../../palette";
 

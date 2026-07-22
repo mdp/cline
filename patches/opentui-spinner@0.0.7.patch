@@ -1,0 +1,17 @@
+diff --git a/package.json b/package.json
+index 9c0173031c707fbfd24679bcf7c7f63d09486c1e..ae267eea068b673abc130bd47dba4e89ca4a2274 100644
+--- a/package.json
++++ b/package.json
+@@ -66,9 +66,9 @@
+   },
+   "devDependencies": {
+     "@biomejs/biome": "2.3.4",
+-    "@opentui/core": "^0.3.4",
+-    "@opentui/react": "^0.3.4",
+-    "@opentui/solid": "^0.3.4",
++    "@opentui/core": "^0.3.4 || ^0.4.0",
++    "@opentui/react": "^0.3.4 || ^0.4.0",
++    "@opentui/solid": "^0.3.4 || ^0.4.0",
+     "@types/bun": "latest",
+     "@types/react": "^19.2.0",
+     "react": "^19.2.0",

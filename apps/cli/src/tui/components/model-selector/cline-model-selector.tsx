@@ -1,7 +1,8 @@
 // @jsxImportSource @opentui/react
-import type { ChoiceContext } from "@opentui-ui/dialog";
-import { useDialogKeyboard } from "@opentui-ui/dialog/react";
+
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { ChoiceContext } from "#dialog";
+import { useDialogKeyboard } from "#dialog";
 import { palette } from "../../palette";
 import {
 	CLINE_MODEL_PICKER_TIER_LABELS,

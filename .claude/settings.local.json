@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(chezmoi source-path *)",
+      "Bash(chezmoi diff *)",
+      "Bash(git -C ~/.local/share/chezmoi diff)",
+      "Bash(git -C ~/.local/share/chezmoi log --oneline -5)"
+    ]
+  }
+}

@@ -105,7 +105,7 @@ cline-sdk/
 | CLI Framework | Commander.js | Argument parsing, subcommands |
 | TUI Renderer | OpenTUI (`@opentui/core`) | Native terminal rendering engine (Zig + C ABI) |
 | TUI Components | OpenTUI React (`@opentui/react`) | React 19 reconciler for declarative terminal UI |
-| TUI Dialogs | `@opentui-ui/dialog` | Modal dialog system (model picker, tool approval, etc.) |
+| TUI Dialogs | Local compatibility layer on `@tuiparts/react/dialog` | Modal dialog system (model picker, tool approval, etc.) |
 | Linter/Formatter | Biome | Code quality and formatting |
 | Testing | Vitest | Unit and E2E tests |
 | Logging | Pino | Runtime file logging |
@@ -259,10 +259,10 @@ type ChatEntry =
 
 ### Dialog System
 
-Dialogs use `@opentui-ui/dialog`. The pattern:
+Dialogs use the CLI's internal `#dialog` compatibility module. The pattern:
 
 ```tsx
-import { useDialog } from "@opentui-ui/dialog/react";
+import { useDialog } from "#dialog";
 
 const dialog = useDialog();
 const result = await dialog.choice<string>({
@@ -411,7 +411,7 @@ Then attach VS Code or Chrome DevTools to `ws://127.0.0.1:6499`.
 - Packages used by CLI:
   - `@opentui/core` - Native renderer and built-in elements
   - `@opentui/react` - React reconciler (`createRoot`, hooks)
-  - `@opentui-ui/dialog` - Dialog/modal system
+  - `@tuiparts/react` - Dialog primitives used by the local compatibility layer
   - `opentui-spinner` - Spinner component
 
 ## Publishing

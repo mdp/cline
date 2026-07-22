@@ -1,7 +1,7 @@
 import type { ToolApprovalRequest } from "@cline/shared";
-import type { ChoiceContext } from "@opentui-ui/dialog";
-import { useDialogKeyboard } from "@opentui-ui/dialog/react";
 import type React from "react";
+import type { ChoiceContext } from "#dialog";
+import { useDialogKeyboard } from "#dialog";
 import { palette } from "../../palette";
 import {
 	parseApplyPatchInput,

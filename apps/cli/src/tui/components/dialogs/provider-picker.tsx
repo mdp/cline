@@ -11,10 +11,10 @@ import {
 	startClineDeviceAuth,
 } from "@cline/core";
 import { getClineEnvironmentConfig } from "@cline/shared";
-import type { ChoiceContext } from "@opentui-ui/dialog";
-import { useDialogKeyboard } from "@opentui-ui/dialog/react";
 import open from "open";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { ChoiceContext } from "#dialog";
+import { useDialogKeyboard } from "#dialog";
 import {
 	CODEX_CLI_INSTALL_URL,
 	type CodexCliStatus,

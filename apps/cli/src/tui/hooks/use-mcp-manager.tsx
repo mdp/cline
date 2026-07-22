@@ -1,6 +1,5 @@
-import type { ChoiceContext } from "@opentui-ui/dialog";
-import type { DialogActions } from "@opentui-ui/dialog/react";
 import { useCallback } from "react";
+import type { ChoiceContext, DialogActions } from "#dialog";
 import type {
 	InteractiveConfigData,
 	InteractiveConfigItem,

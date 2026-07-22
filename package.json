@@ -82,5 +82,8 @@
         "better-sqlite3",
         "grpc-tools"
     ],
-    "packageManager": "bun@1.3.13"
+    "packageManager": "bun@1.3.13",
+    "patchedDependencies": {
+        "opentui-spinner@0.0.7": "patches/opentui-spinner@0.0.7.patch"
+    }
 }

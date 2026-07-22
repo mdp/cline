@@ -3,13 +3,9 @@ import type { Message } from "@cline/shared";
 import { formatDisplayUserInput, truncateStr } from "@cline/shared";
 import type { KeyEvent } from "@opentui/core";
 import { useRenderer, useTerminalDimensions } from "@opentui/react";
-import type { ChoiceContext } from "@opentui-ui/dialog";
-import {
-	DialogProvider,
-	useDialog,
-	useDialogState,
-} from "@opentui-ui/dialog/react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { ChoiceContext } from "#dialog";
+import { DialogProvider, useDialog, useDialogState } from "#dialog";
 import { shouldSuppressClineCliMigrationNoticeForActiveProvider } from "../kanban-migration/notice";
 import { MigrationNoticeContent } from "../kanban-migration/notice-dialog";
 import type { RepoStatus } from "../utils/repo-status";

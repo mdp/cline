@@ -7,9 +7,9 @@ import {
 	truncateStr,
 } from "@cline/shared";
 import { useKeyboard, useTerminalDimensions } from "@opentui/react";
-import type { ChoiceContext } from "@opentui-ui/dialog";
-import { useDialogKeyboard } from "@opentui-ui/dialog/react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { ChoiceContext } from "#dialog";
+import { useDialogKeyboard } from "#dialog";
 import { listSessions } from "../../session/session";
 import { mergeHistoryStatusRows } from "../../utils/history-format";
 import { formatUsd } from "../../utils/output";
